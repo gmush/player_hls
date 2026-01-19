@@ -8,8 +8,9 @@
 - [x] Ensure Documentation is Complete
 
 # Summary
-- Vanilla JS audio player using hls.js
-- Displays all metadata from the stream
-- Test stream: https://28553.live.streamtheworld.com/ZET_DANCE.mp3?dist=eztestbanera
+- Vanilla JS audio player using hls.js and flv.js
+- Displays HLS metadata and FLV script data (cue points, listener info)
+- Separate FLV Media Info panel for large JSON payloads
+- Test streams include MP3, HLS, and FLV examples
 - No frameworks, just HTML, CSS, JS
 - See README.md for usage
