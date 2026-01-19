@@ -1,0 +1,99 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 30px;
+}
+
+audio {
+  display: block;
+  margin: 30px auto 10px auto;
+  width: 90%;
+  max-width: 1000px;
+}
+
+#controls {
+  max-width: 1000px;
+  margin: 0 auto 10px auto;
+  width: 90%;
+}
+
+.stream-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.stream-select label {
+  font-size: 0.95em;
+}
+
+.stream-select select {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95em;
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95em;
+}
+
+.stream-input {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.stream-input input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95em;
+}
+
+.stream-input button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 4px;
+  background: #2d6cdf;
+  color: #fff;
+  font-size: 0.95em;
+  cursor: pointer;
+}
+
+.stream-input button:hover {
+  background: #2459b7;
+}
+
+#metadata-container,
+#flv-media-info-container {
+  background: #fff;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 1000px;
+}
+
+#metadata,
+#flv-media-info {
+  background: #222;
+  color: #0f0;
+  padding: 10px;
+  border-radius: 4px;
+  min-height: 60px;
+  font-size: 1em;
+  overflow-x: auto;
+}

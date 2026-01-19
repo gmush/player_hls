@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HLS and FLV Audio Stream Player</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>HLS and FLV Audio Stream Player</h1>
+  <audio id="audio" controls></audio>
+  <div id="controls">
+    <div class="stream-select">
+      <label for="example-streams">Example streams:</label>
+      <select id="example-streams">
+        <option value="">-- Select an example --</option>
+        <option value="https://28553.live.streamtheworld.com/ZET_DANCE">ZET DANCE (FLV)</option>
+        <option value="https://knkx-live-a.edge.audiocdn.com/6284_256k/playlist.m3u8">KNKX 256k</option>
+        <option value="https://knkx-live-a.edge.audiocdn.com/6284_64k/playlist.m3u8">KNKX 64k</option>
+        <option value="https://hls.somafm.com/hls/groovesalad/320k/program.m3u8">SomaFM Groove Salad 320k</option>
+      </select>
+    </div>
+    <label class="checkbox">
+      <input type="checkbox" id="use-texttrack" />
+      Use native TextTrack API
+    </label>
+    <div class="stream-input">
+      <input
+        type="url"
+        id="stream-url"
+        placeholder="Enter stream URL (.m3u8 or audio stream)"
+        aria-label="Stream URL"
+      />
+      <button id="load-stream" type="button">Load</button>
+    </div>
+  </div>
+  <div id="metadata-container">
+    <h2>Metadata</h2>
+    <pre id="metadata"></pre>
+  </div>
+  <div id="flv-media-info-container">
+    <h2>FLV Media Info</h2>
+    <pre id="flv-media-info"></pre>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flv.js@latest"></script>
+  <script src="main.js"></script>
+</body>
+</html>
