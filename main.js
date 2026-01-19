@@ -50,6 +50,22 @@ function appendMetadataLine(text) {
   metadataPre.textContent = `${prefix}${text}`;
 }
 
+function safeStringify(value) {
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return String(value);
+  }
+}
+
+function safePrettyStringify(value) {
+  try {
+    return JSON.stringify(value, null, 2);
+  } catch {
+    return safeStringify(value);
+  }
+}
+
 function displayFlvMediaInfo(info) {
   if (!flvMediaInfoPre) {
     return;
@@ -79,6 +95,14 @@ function attachFlvEventLogging(player) {
   eventNames.forEach((eventName) => {
     player.on(eventName, (...args) => {
       console.log('[flv.js]', eventName, ...args);
+      if (!flvActive) {
+        return;
+      }
+      if (eventName === flvjs.Events.STATISTICS_INFO) {
+        return;
+      }
+      const payload = args.length ? args.map((item) => safeStringify(item)).join(' ') : '';
+      appendMetadataLine(`[flv.js] ${eventName}${payload ? ` ${payload}` : ''}`.trim());
     });
   });
 }
@@ -366,28 +390,27 @@ function loadStream(url) {
       isLive: true
     });
     flvPlayer.attachMediaElement(audio);
-    flvPlayer.load();
     attachFlvEventLogging(flvPlayer);
 
     flvPlayer.on(flvjs.Events.METADATA_ARRIVED, (metadata) => {
-      appendMetadataLine(JSON.stringify({ event: 'FLV_METADATA_ARRIVED', metadata }, null, 2));
+      appendMetadataLine(safePrettyStringify({ event: 'FLV_METADATA_ARRIVED', metadata }));
     });
 
     flvPlayer.on(flvjs.Events.SCRIPT_DATA_ARRIVED, (data) => {
-      appendMetadataLine(`[flv.js] scriptdata_arrived ${data ? JSON.stringify(data) : ''}`.trim());
+      appendMetadataLine(`[flv.js] scriptdata_arrived ${data ? safeStringify(data) : ''}`.trim());
       if (data && data.onCuePoint) {
-        appendMetadataLine(JSON.stringify({ event: 'FLV_CUE_POINT', cuePoint: data.onCuePoint }, null, 2));
+        appendMetadataLine(safePrettyStringify({ event: 'FLV_CUE_POINT', cuePoint: data.onCuePoint }));
         return;
       }
       if (data && data.onListenerInfo) {
-        appendMetadataLine(JSON.stringify({ event: 'FLV_LISTENER_INFO', listenerInfo: data.onListenerInfo }, null, 2));
+        appendMetadataLine(safePrettyStringify({ event: 'FLV_LISTENER_INFO', listenerInfo: data.onListenerInfo }));
         return;
       }
       if (data && data.onMetaData) {
-        appendMetadataLine(JSON.stringify({ event: 'FLV_ON_METADATA', metadata: data.onMetaData }, null, 2));
+        appendMetadataLine(safePrettyStringify({ event: 'FLV_ON_METADATA', metadata: data.onMetaData }));
         return;
       }
-      appendMetadataLine(JSON.stringify({ event: 'FLV_SCRIPT_DATA_ARRIVED', data }, null, 2));
+      appendMetadataLine(safePrettyStringify({ event: 'FLV_SCRIPT_DATA_ARRIVED', data }));
     });
 
     flvPlayer.on(flvjs.Events.MEDIA_INFO, (info) => {
@@ -395,19 +418,21 @@ function loadStream(url) {
     });
 
     flvPlayer.on(flvjs.Events.ERROR, (errorType, errorDetail, errorInfo) => {
-      appendMetadataLine(JSON.stringify({
+      appendMetadataLine(safePrettyStringify({
         event: 'FLV_ERROR',
         errorType,
         errorDetail,
         errorInfo
-      }, null, 2));
+      }));
     });
 
-    appendMetadataLine(JSON.stringify({
+    flvPlayer.load();
+
+    appendMetadataLine(safePrettyStringify({
       event: 'INFO',
       message: 'FLV.js playback enabled.',
       url: trimmed
-    }, null, 2));
+    }));
     tryAutoPlay();
   } else if (!isHlsUrl(trimmed)) {
     hlsActive = false;
